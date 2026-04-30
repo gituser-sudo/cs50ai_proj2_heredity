@@ -195,13 +195,13 @@ def get_gene_prob(people, name, no_genes):
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
-        p_1_gene = PROBS["gene"][no_genes]    # unconditional prob
+        p_gene = PROBS["gene"][no_genes]    # unconditional prob
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
         match no_genes:
             case 0:
-                (
+                p_gene = (
                     (get_gene_prob(people, mother, 0) * (1 - PROBS["mutation"]) +
                      get_gene_prob(people, mother, 1) * 0.5 +
                      get_gene_prob(people, mother, 2) * PROBS["mutation"])
@@ -215,7 +215,8 @@ def get_gene_prob(people, name, no_genes):
                 # Prob mother is 1 & Father is 0
                 # +  mother is 0 & father is 1
                 # in each case start with 0 genes and go up to 2. consider mutation also. so 2 items for each
-                (
+                # symmetric for mother and father . so multiply by 2
+                p_gene = 2 * (
                     get_gene_prob(people, mother, 0) * PROBS["mutation"] +
                     get_gene_prob(people, mother, 1) * 0.5 +
                     get_gene_prob(people, mother, 2) * (1 - PROBS["mutation"])
@@ -226,7 +227,7 @@ def get_gene_prob(people, name, no_genes):
                 )
             case 2:
                 # +  mother is 1 & father is 1
-                (
+                p_gene = (
                     get_gene_prob(people, mother, 0) * PROBS["mutation"] +
                     get_gene_prob(people, mother, 1) * 0.5 +
                     get_gene_prob(people, mother, 2) * (1 - PROBS["mutation"])
@@ -259,7 +260,7 @@ def get_gene_prob(people, name, no_genes):
             #                 * get_gene_prob(people, mother, 0)  *  (PROBS["mutation"])  # don't mutation for both father & mother
             # # need to calculate combination
 
-    return p_1_gene
+    return p_gene
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
