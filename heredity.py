@@ -195,8 +195,17 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
-        # here we already know the number of genes for each person 
-        p_gene = PROBS["gene"][no_genes]    # unconditional prob
+        # here we already know the number of genes to consider for each person.
+        # for the root child it is passed in no_genes but for the reset we pull
+        # from the passed one gne, two gene, no gene set
+        if name is in one_gene.keys() and no_genes = 1:
+            p_gene = PROBS["gene"][no_genes]    # unconditional prob
+        else if name is in two_gene.keys() and no_genes = 2:
+            p_gene = PROBS["gene"][no_genes]    # unconditional prob
+         else if no_genes = 0:
+             p_gene = PROBS["gene"][no_genes]
+         else
+             p_gene = 0
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
