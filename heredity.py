@@ -155,16 +155,16 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     p_1_gene = 1.0
     for name in one_gene:
-        p_1_gene = p_1_gene * get_gene_prob(people, name, 1)
+        p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
 
     p_2_gene = 1
     for name in two_genes:
-        p_2_gene = p_2_gene * get_gene_prob(people, name, 2)
+        p_2_gene = p_2_gene * get_gene_prob(people, name, 2, one_gene, two_genes)
 
     p_0_gene = 1
     for name in people:
         if name not in one_gene and name not in two_genes:
-            p_0_gene = p_0_gene * get_gene_prob(people, name, 0)
+            p_0_gene = p_0_gene * get_gene_prob(people, name, 0, one_gene, two_genes)
 
     p_trait = 1
     p_no_trait = 1
@@ -172,22 +172,22 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     for person in people:
         if person in have_trait:
             p_trait = p_trait * (
-                get_gene_prob(people, name, 0) * PROBS["trait"][0][True]
-                + get_gene_prob(people, name, 1) * PROBS["trait"][1][True]
-                + get_gene_prob(people, name, 2) * PROBS["trait"][2][True]
+                get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][True]
+                + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][True]
+                + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][True]
             )
         else:
             p_no_trait = p_no_trait * (
-                get_gene_prob(people, name, 0) * PROBS["trait"][0][False]
-                + get_gene_prob(people, name, 1) * PROBS["trait"][1][False]
-                + get_gene_prob(people, name, 2) * PROBS["trait"][2][False]
+                get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][False]
+                + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][False]
+                + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][False]
             )
 
 
     return p_1_gene * p_2_gene * p_0_gene * p_trait * p_no_trait
 
 
-def get_gene_prob(people, name, no_genes):
+def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     person = people[name]
     mother = person["mother"]
     father = person["father"]
@@ -195,6 +195,7 @@ def get_gene_prob(people, name, no_genes):
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
+        # here we already know the number of genes for each person 
         p_gene = PROBS["gene"][no_genes]    # unconditional prob
     else:
         # write all combinations
