@@ -198,9 +198,9 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
         # here we already know the number of genes to consider for each person.
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
-        if name in one_gene.keys() and no_genes == 1:
+        if name in one_gene and no_genes == 1:
             p_gene = PROBS["gene"][no_genes]    # unconditional prob
-        elif name in two_genes.keys() and no_genes == 2:
+        elif name in two_genes and no_genes == 2:
             p_gene = PROBS["gene"][no_genes]    # unconditional prob
         elif no_genes == 0:
             p_gene = PROBS["gene"][no_genes]
