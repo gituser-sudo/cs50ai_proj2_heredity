@@ -156,6 +156,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     p_1_gene = 1.0
     for name in one_gene:
         p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
+        print nam
 
     p_2_gene = 1
     for name in two_genes:
