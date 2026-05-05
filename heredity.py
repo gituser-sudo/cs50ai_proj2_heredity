@@ -193,6 +193,8 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     mother = person["mother"]
     father = person["father"]
 
+    print(f"name {name}, mother {mother} father {father}")
+
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
