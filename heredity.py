@@ -198,6 +198,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
+        print(f"no parents. getting unconditional prob")
         # here we already know the number of genes to consider for each person.
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
