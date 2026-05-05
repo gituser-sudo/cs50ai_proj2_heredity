@@ -153,6 +153,9 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     # for now assume person has no parent or both parents.
 
+    print(one_gene)
+    print(two_genes)
+    print(people)
     p_1_gene = 1.0
     for name in one_gene:
         p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
