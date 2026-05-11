@@ -188,7 +188,9 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             )
 
     print(f"P 1 gene{p_1_gene} P 2 gene {p_2_gene} P 0 genen {p_0_gene} trait True {p_trait} Trait False {p_no_trait}")
-    return p_1_gene * p_2_gene * p_0_gene * p_trait * p_no_trait
+    p = p_1_gene * p_2_gene * p_0_gene * p_trait * p_no_trait
+    f("p {p}")
+    return p
 
 
 def get_gene_prob(people, name, no_genes, one_gene, two_genes):
