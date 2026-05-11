@@ -153,13 +153,13 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     # for now assume person has no parent or both parents.
 
-    print(one_gene)
-    print(two_genes)
-    print(people)
+    print(f"One Gene {one_gene}")
+    print(f"Two Gene {two_genes}")
+
     p_1_gene = 1.0
     for name in one_gene:
         p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
-        print(f" name {name}, p_1_gene {p_1_gene}")
+ #       print(f" name {name}, p_1_gene {p_1_gene}")
 
     p_2_gene = 1
     for name in two_genes:
@@ -196,12 +196,12 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     mother = person["mother"]
     father = person["father"]
 
-    print(f"name {name}, mother {mother} father {father}")
+ #   print(f"name {name}, mother {mother} father {father}")
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
-        print(f"no parents. getting unconditional prob")
+#        print(f"no parents. getting unconditional prob")
         # here we already know the number of genes to consider for each person.
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
