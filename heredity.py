@@ -187,7 +187,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                 + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][False]
             )
 
-
+    print(f"P 1 gene{p_1_gene} P 2 gene {p_2_gene} P 0 genen {p_0_gene} trait True {p_trait} Trait False {p_no_trait}")
     return p_1_gene * p_2_gene * p_0_gene * p_trait * p_no_trait
 
 
