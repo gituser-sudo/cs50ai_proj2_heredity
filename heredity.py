@@ -169,6 +169,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     p_0_gene = 1
     for name in people:
         if name not in one_gene and name not in two_genes:
+            p_0 = get_gene_prob(people, name, 0, one_gene, two_genes)
+            print(f"prob 0 is {p_0} for name {name}")
             p_0_gene = p_0_gene * get_gene_prob(people, name, 0, one_gene, two_genes)
 
     p_trait = 1
