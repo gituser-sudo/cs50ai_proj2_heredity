@@ -155,6 +155,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     print(f"One Gene {one_gene}")
     print(f"Two Gene {two_genes}")
+    print(f"Have Trait {have_trait}")
 
     p_1_gene = 1.0
     for name in one_gene:
