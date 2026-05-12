@@ -176,13 +176,13 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     for name in people:
         if name in have_trait:
-            p_trait = p_trait * (
+            p_trait = p_trait +  (
                 get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][True]
                 + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][True]
                 + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][True]
             )
         else:
-            p_no_trait = p_no_trait * (
+            p_no_trait = p_no_trait + (
                 get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][False]
                 + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][False]
                 + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][False]
