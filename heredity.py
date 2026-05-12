@@ -218,6 +218,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
             p_gene = PROBS["gene"][no_genes]
         else:
             p_gene = 0
+        print(f"p_gene is {p_gene}")
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
