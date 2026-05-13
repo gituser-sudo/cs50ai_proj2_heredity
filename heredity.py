@@ -157,37 +157,49 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     print(f"Two Gene {two_genes}")
     print(f"Have Trait {have_trait}")
 
-    p_1_gene = 1.0
-    for name in one_gene:
-        p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
- #       print(f" name {name}, p_1_gene {p_1_gene}")
 
-    p_2_gene = 1
-    for name in two_genes:
-        p_2_gene = p_2_gene * get_gene_prob(people, name, 2, one_gene, two_genes)
+# manually calculate for simple family with no gene and no trait
+# assuming 3 same members  James , Lily, Harry
+#  p_gene probabilities  
 
-    p_0_gene = 1
-    for name in people:
-        if name not in one_gene and name not in two_genes:
-            p_0 = get_gene_prob(people, name, 0, one_gene, two_genes)
-            print(f"prob 0 is {p_0} for name {name}")
-            p_0_gene = p_0_gene * get_gene_prob(people, name, 0, one_gene, two_genes)
+
+#  We will not calculate the p_1_gene and p_2_gene separately
+#  instead calculate along with the trait probabilities. The advantage
+# is the delta function that selects the no_genes is available in that method
+#     p_1_gene = 1.0
+#     for name in one_gene:
+#         p_1_gene = p_1_gene * get_gene_prob(people, name, 1, one_gene, two_genes)
+#  #       print(f" name {name}, p_1_gene {p_1_gene}")
+
+#     p_2_gene = 1
+#     for name in two_genes:
+#         p_2_gene = p_2_gene * get_gene_prob(people, name, 2, one_gene, two_genes)
+
+#     p_0_gene = 1
+#     for name in people:
+#         if name not in one_gene and name not in two_genes:
+#             p_0 = get_gene_prob(people, name, 0, one_gene, two_genes)
+#             print(f"prob 0 is {p_0} for name {name}")
+#             p_0_gene = p_0_gene * get_gene_prob(people, name, 0, one_gene, two_genes)
 
     p_trait = 1
     p_no_trait = 1
 
-    for name in people:
-        if name in have_trait:
-            p_trait = p_trait *  (
-                 PROBS["trait"][0][True]
-                +  PROBS["trait"][1][True]
-                + PROBS["trait"][2][True]
+#  We will keep the get_gene_prob  here since that has the delta function to choose the correct
+#  no_genes
+
+    for person in people:
+        if person in have_trait:
+            p_trait = p_trait * (
+                get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][True]
+                + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][True]
+                + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][True]
             )
         else:
             p_no_trait = p_no_trait * (
-               PROBS["trait"][0][False]
-                +  PROBS["trait"][1][False]
-                +  PROBS["trait"][2][False]
+                get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][False]
+                + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][False]
+                + get_gene_prob(people, name, 2, one_gene, two_genes) * PROBS["trait"][2][False]
             )
 
     print(f"P 1 gene{p_1_gene} P 2 gene {p_2_gene} P 0 genen {p_0_gene} trait True {p_trait} Trait False {p_no_trait}")
@@ -210,6 +222,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
         # here we already know the number of genes to consider for each person.
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
+        # the if statments act like a delta function to select the correct no_genes
         if name in one_gene and no_genes == 1:
             p_gene = PROBS["gene"][no_genes]    # unconditional prob
         elif name in two_genes and no_genes == 2:
