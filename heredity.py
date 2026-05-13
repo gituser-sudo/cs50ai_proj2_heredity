@@ -160,7 +160,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
 # manually calculate for simple family with no gene and no trait
 # assuming 3 same members  James , Lily, Harry
-#  p_gene probabilities  
+#  p_gene probabilities
 
 
 #  We will not calculate the p_1_gene and p_2_gene separately
@@ -188,8 +188,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 #  We will keep the get_gene_prob  here since that has the delta function to choose the correct
 #  no_genes
 
-    for person in people:
-        if person in have_trait:
+    for name in people:
+        if name in have_trait:
             p_trait = p_trait * (
                 get_gene_prob(people, name, 0, one_gene, two_genes) * PROBS["trait"][0][True]
                 + get_gene_prob(people, name, 1, one_gene, two_genes) * PROBS["trait"][1][True]
