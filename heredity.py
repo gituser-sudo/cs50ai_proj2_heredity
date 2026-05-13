@@ -160,7 +160,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
 # manually calculate for simple family with no gene and no trait
 # assuming 3 same members  James , Lily, Harry
-#  p_gene probabilities
+#  p_gene probabilities  0.96 * 0.96 * 0.99  (0.99 for harry given its 1 times !1 -mutation prob) )
+# thr trait prob will be 0.99 * 0.99 * 0.99  same for all
 
 
 #  We will not calculate the p_1_gene and p_2_gene separately
