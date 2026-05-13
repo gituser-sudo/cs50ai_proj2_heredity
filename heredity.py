@@ -214,7 +214,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     mother = person["mother"]
     father = person["father"]
 
-    print(f"name {name}, mother {mother} father {father}")
+    print(f"name {name}, mother {mother} father {father} no of genes to calculate {no_genes}")
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
@@ -297,7 +297,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
             #                 * get_gene_prob(people, mother, 0)  *  (PROBS["mutation"])  # don't mutation for both father & mother
             # # need to calculate combination
 
-    print(f"p_gene for name{name} = {p_gene}")
+    print(f"p_gene for name{name} and no of genes {no_genes} = {p_gene}")
     return p_gene
 
 
