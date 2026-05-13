@@ -214,12 +214,12 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     mother = person["mother"]
     father = person["father"]
 
- #   print(f"name {name}, mother {mother} father {father}")
+    print(f"name {name}, mother {mother} father {father}")
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
     if mother is None and father is None:
-#        print(f"no parents. getting unconditional prob")
+        print(f"name {name} no parents. getting unconditional prob")
         # here we already know the number of genes to consider for each person.
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
@@ -236,6 +236,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
+        print(f"name {name} getting conditional prob")
         match no_genes:
             case 0:
                 p_gene = (
