@@ -206,6 +206,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     print(f"trait True {p_trait} Trait False {p_no_trait}")
     p =  p_trait * p_no_trait
     print(f"p {p}")
+    sys.exit
     return p
 
 
