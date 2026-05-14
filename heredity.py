@@ -274,28 +274,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes):
                     get_gene_prob(people, father, 2, one_gene, two_genes) * (1 - PROBS["mutation"])
                 )
 
-            # if mother is  None and father is None:
-            #     p1_gene = get_gene_prob(people, mother, 0) * PROBS["mutation"] * get_gene_prob(people, father, 0) * (1 - PROBS["mutation"]) +
-            #                  get_gene_prob(people, mother, 0) * (1 - PROBS["mutation"]) * get_gene_prob(people, father, 0) * PROBS["mutation"]
-            # if mother is not None and father is None:
-            #     p1_gene = get_gene_prob(people, mother, 2) * (1- PROBS["mutation"]) *
-            #                get_gene_prob(people, father, 0) * PROBS["mutation"]
-            #                + get_gene_prob(people, mother, 1) * 0.5  # father cancels out
-            # if mother is None and father is not None:
-            #     p1_gene = (get_gene_prob(people, father, 2) * (1- PROBS["mutation"]) *
-            #                 get_gene_prob(people, mother, 0) * PROBS["mutation"]
-            #                + get_gene_prob(people, father, 1) * 0.5 # mother cancels out
-            # if mother is not None and father is not None:
-            #     p1_gene = (get_gene_prob(people, mother, 2) * (1- PROBS["mutation"])
-            #                 * get_gene_prob(people, father, 1) * 0.5) # mutation prob cancels out for the father. not for the mother
-            #                 + (get_gene_prob(people, mother, 2) * (1- PROBS["mutation"])
 
-            #             + get_gene_prob(people, mother, 1) *   get_gene_prob(people, father, 1) # not the mutation prob cancels out
-            #             +  (get_gene_prob(people, father, 2) * (1- PROBS["mutation"])
-            #                 * get_gene_prob(people, mother, 1) * 0.5) # mutation prob cancels out for other way around here
-            #               +  (get_gene_prob(people, father, 2) * (1- PROBS["mutation"])
-            #                 * get_gene_prob(people, mother, 0)  *  (PROBS["mutation"])  # don't mutation for both father & mother
-            # # need to calculate combination
 
     print(f"p_gene for name{name} and no of genes {no_genes} = {p_gene}")
     return p_gene
