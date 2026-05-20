@@ -217,8 +217,10 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
 
     print(f"name {name}, mother {mother} father {father} no of genes to calculate {no_genes}")
     mul = 1
+    add = 0
     if isParent:
         mul = 0
+        add = 1
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
@@ -237,7 +239,7 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
         else:
             p_gene = 0
 
-        p_gene = p_gene * mul
+        p_gene = p_gene * mul + add
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
