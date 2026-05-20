@@ -219,8 +219,8 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
     mul = 0
     add = 1
     if isParent:
-        mul = 0
-        add = 1
+        mul = 1
+        add = 0
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
