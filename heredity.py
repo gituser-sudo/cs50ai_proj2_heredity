@@ -216,8 +216,8 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
     father = person["father"]
 
     print(f"name {name}, mother {mother} father {father} no of genes to calculate {no_genes}")
-    mul = 1
-    add = 0
+    mul = 0
+    add = 1
     if isParent:
         mul = 0
         add = 1
