@@ -157,6 +157,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     print(f"Two Gene {two_genes}")
     print(f"Have Trait {have_trait}")
 
+    processedPersons = set()
+
 
 # manually calculate for simple family with no gene and no trait
 # assuming 3 same members  James , Lily, Harry
@@ -192,35 +194,31 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     for name in people:
         if name in have_trait:
             p_trait = p_trait * (
-                get_gene_prob(people, name, 0, one_gene, two_genes, False) * PROBS["trait"][0][True]
-                + get_gene_prob(people, name, 1, one_gene, two_genes, False) * PROBS["trait"][1][True]
-                + get_gene_prob(people, name, 2, one_gene, two_genes, False) * PROBS["trait"][2][True]
+                get_gene_prob(people, name, 0, one_gene, two_genes, processedPersons) * PROBS["trait"][0][True]
+                + get_gene_prob(people, name, 1, one_gene, two_genes, processedPersons) * PROBS["trait"][1][True]
+                + get_gene_prob(people, name, 2, one_gene, two_genes, processedPersons) * PROBS["trait"][2][True]
             )
         else:
             p_no_trait = p_no_trait * (
-                get_gene_prob(people, name, 0, one_gene, two_genes, False) * PROBS["trait"][0][False]
-                + get_gene_prob(people, name, 1, one_gene, two_genes, False) * PROBS["trait"][1][False]
-                + get_gene_prob(people, name, 2, one_gene, two_genes, False) * PROBS["trait"][2][False]
+                get_gene_prob(people, name, 0, one_gene, two_genes, processedPersons) * PROBS["trait"][0][False]
+                + get_gene_prob(people, name, 1, one_gene, two_genes, processedPersons) * PROBS["trait"][1][False]
+                + get_gene_prob(people, name, 2, one_gene, two_genes, processedPersons) * PROBS["trait"][2][False]
             )
 
     print(f"trait True {p_trait} Trait False {p_no_trait}")
     p =  p_trait * p_no_trait
     print(f"p {p}")
-    sys.exit()
+#    sys.exit()
     return p
 
 
-def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
+def get_gene_prob(people, name, no_genes, one_gene, two_genes, processedPersons):
     person = people[name]
     mother = person["mother"]
     father = person["father"]
 
     print(f"name {name}, mother {mother} father {father} no of genes to calculate {no_genes}")
-    mul = 0
-    add = 1
-    if isParent:
-        mul = 1
-        add = 0
+
 
     # this has to be recursive . we may have to go up generations to reach
     # the unconditional prob
@@ -230,16 +228,29 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
         # for the root child it is passed in no_genes but for the reset we pull
         # from the passed one gne, two gene, no gene set
         # the if statments act like a delta function to select the correct no_genes
+        addPerson = False
+
         if name in one_gene and no_genes == 1:
             p_gene = PROBS["gene"][no_genes]    # unconditional prob
+            addPerson = True
         elif name in two_genes and no_genes == 2:
             p_gene = PROBS["gene"][no_genes]    # unconditional prob
+            addPerson = True
         elif no_genes == 0:
             p_gene = PROBS["gene"][no_genes]
+            addPerson = True
         else:
             p_gene = 0
 
-        p_gene = p_gene * mul + add
+        if name in processedPersons:
+            if addPerson is True:
+                p_gene = 1
+            else:
+                p_gene = 0
+        else:
+            if addPerson is True:
+                processedPersons.add(name)
+
     else:
         # write all combinations
         #   Child Count M_Count     F_Count     M_Contrib    F_Contrib
@@ -247,13 +258,13 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
         match no_genes:
             case 0:
                 p_gene = (
-                    (get_gene_prob(people, mother, 0, one_gene, two_genes, True) * (1 - PROBS["mutation"]) +
-                     get_gene_prob(people, mother, 1, one_gene, two_genes, True) * 0.5 +
-                     get_gene_prob(people, mother, 2, one_gene, two_genes, True) * PROBS["mutation"])
+                    (get_gene_prob(people, mother, 0, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"]) +
+                     get_gene_prob(people, mother, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                     get_gene_prob(people, mother, 2, one_gene, two_genes, processedPersons) * PROBS["mutation"])
                 ) * (
-                    get_gene_prob(people, father, 0, one_gene, two_genes, True) * (1 - PROBS["mutation"]) +
-                    get_gene_prob(people, father, 1, one_gene, two_genes, True) * 0.5 +
-                    get_gene_prob(people, father, 2, one_gene, two_genes, True) * PROBS["mutation"]
+                    get_gene_prob(people, father, 0, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"]) +
+                    get_gene_prob(people, father, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                    get_gene_prob(people, father, 2, one_gene, two_genes, processedPersons) * PROBS["mutation"]
                 )
             case 1:
                 # try to make this easy
@@ -262,24 +273,24 @@ def get_gene_prob(people, name, no_genes, one_gene, two_genes, isParent):
                 # in each case start with 0 genes and go up to 2. consider mutation also. so 2 items for each
                 # symmetric for mother and father . so multiply by 2
                 p_gene = 2 * (
-                    get_gene_prob(people, mother, 0, one_gene, two_genes, True) * PROBS["mutation"] +
-                    get_gene_prob(people, mother, 1, one_gene, two_genes, True) * 0.5 +
-                    get_gene_prob(people, mother, 2, one_gene, two_genes, True) * (1 - PROBS["mutation"])
+                    get_gene_prob(people, mother, 0, one_gene, two_genes, processedPersons) * PROBS["mutation"] +
+                    get_gene_prob(people, mother, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                    get_gene_prob(people, mother, 2, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"])
                 ) * (
-                    get_gene_prob(people, father, 0, one_gene, two_genes, True) * (1 - PROBS["mutation"]) +
-                    get_gene_prob(people, father, 1, one_gene, two_genes, True) * 0.5 +
-                    get_gene_prob(people, father, 2, one_gene, two_genes, True) * PROBS["mutation"]
+                    get_gene_prob(people, father, 0, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"]) +
+                    get_gene_prob(people, father, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                    get_gene_prob(people, father, 2, one_gene, two_genes, processedPersons) * PROBS["mutation"]
                 )
             case 2:
                 # +  mother is 1 & father is 1
                 p_gene = (
-                    get_gene_prob(people, mother, 0, one_gene, two_genes, True) * PROBS["mutation"] +
-                    get_gene_prob(people, mother, 1, one_gene, two_genes, True) * 0.5 +
-                    get_gene_prob(people, mother, 2, one_gene, two_genes, True) * (1 - PROBS["mutation"])
+                    get_gene_prob(people, mother, 0, one_gene, two_genes, processedPersons) * PROBS["mutation"] +
+                    get_gene_prob(people, mother, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                    get_gene_prob(people, mother, 2, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"])
                 ) * (
-                    get_gene_prob(people, father, 0, one_gene, two_genes, True) * PROBS["mutation"] +
-                    get_gene_prob(people, father, 1, one_gene, two_genes, True) * 0.5 +
-                    get_gene_prob(people, father, 2, one_gene, two_genes, True) * (1 - PROBS["mutation"])
+                    get_gene_prob(people, father, 0, one_gene, two_genes, processedPersons) * PROBS["mutation"] +
+                    get_gene_prob(people, father, 1, one_gene, two_genes, processedPersons) * 0.5 +
+                    get_gene_prob(people, father, 2, one_gene, two_genes, processedPersons) * (1 - PROBS["mutation"])
                 )
 
 
